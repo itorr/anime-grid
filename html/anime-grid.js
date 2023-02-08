@@ -92,7 +92,7 @@ const fontHeight = 24;
 
 const width = contentWidth + bodyMargin * 2;
 const height = contentHeight + bodyMargin * 2 + titleHeight;
-const scale = 3;
+const scale = 2;
 
 
 canvas.width = width * scale;
