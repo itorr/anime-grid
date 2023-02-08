@@ -174,8 +174,7 @@ for(let y = 0;y < row;y++){
     }
 }
 
-// const APIURL = `https://lab.magiconch.com/api/bangumi/anime`;
-const APIURL = `http://localhost:60912/api/bangumi/`;
+const APIURL = `https://lab.magiconch.com/api/bangumi/`;
 
 
 const getCoverURLById = id => `${APIURL}anime/${id}/cover.jpg`;
