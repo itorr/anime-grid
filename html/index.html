@@ -4,12 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动画生涯个人喜好表</title>
+    <title>动画生涯个人喜好表生成器 - 神奇海螺试验场</title>
     <link rel="stylesheet" href="document.css">
 </head>
 <body>
     <canvas></canvas>
-    <button class="generator-btn">生成动画生涯个人喜好表</button>
+    <div class="ctrl-box">
+        <a class="generator-btn ui-btn" onclick="downloadImage()">生成动画生涯个人喜好表</a>
+    </div>
+    <div class="search-bangumis-box" data-show="false">
+        <div class="content-box">
+            <form>
+                <input type="text" placeholder="输入关键词、回车查找动画">
+            </form>
+            <div class="anime-list"></div>
+            <div class="foot">
+                <a class="close ui-btn" onclick="closeSearchBox()">取消设定</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <a href="https://lab.magiconch.com/" target="_blank">神奇海螺试验场</a>
+        <a href="https://weibo.com/reiove" target="_blank">@卜卜口</a>
+        <a href="https://github.com/itorr/anime-grid" target="_blank">GitHub</a>
+        <span>动画信息来自 <a href="https://bgm.tv/" target="_blank">番组计划</a></span>
+    </footer>
     <script src="anime-grid.js"></script>
 </body>
 </html>

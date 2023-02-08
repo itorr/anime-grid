@@ -1,10 +1,29 @@
-const canvas = document.querySelector('canvas');
-canvas.style.imageRendering = 'pixelated';
-const ctx = canvas.getContext('2d');
+const Caches = {};
+const get = async (url)=>{
+    if(Caches[url]) return Caches[url];
 
-const bodyMargin = 20;
-const contentWidth = 600;
-const contentHeight = 560;
+    const f = await fetch(url);
+    const data = await f.json();
+    Caches[url] = data;
+    return data;
+}
+
+
+
+
+const Images = {};
+
+const loadImage = (src,onOver)=>{
+    if(Images[src]) return onOver(Images[src]);
+    const el = new Image();
+    el.crossOrigin = 'Anonymous';
+    el.src = src;
+    el.onload = ()=>{
+        onOver(el)
+        Images[src] = el;
+    }
+};
+
 
 const typeTexts = `入坑作
 最喜欢
@@ -27,6 +46,42 @@ const typeTexts = `入坑作
 
 const types = typeTexts.trim().split(/\n+/g);
 
+
+const bangumiLocalKey = 'margiconch-animes-grid';
+
+
+let bangumis = [];
+
+
+const generatorDefaultBangumis = ()=> {
+    bangumis = new Array(types.length).fill(null);
+}
+
+const getBangumiIdsText = ()=> bangumis.map(i=>String(i||0))
+
+const getBangumisFormLocalStorage = ()=>{
+    if(!window.localStorage) return generatorDefaultBangumis();
+
+    const bangumisText = localStorage.getItem(bangumiLocalKey);
+    if(!bangumisText) return generatorDefaultBangumis();
+
+    bangumis = bangumisText.split(/,/g).map(i=>+i || null);
+}
+
+getBangumisFormLocalStorage();
+const saveBangumisToLocalStorage = ()=>{
+    localStorage.setItem(bangumiLocalKey,getBangumiIdsText());
+};
+
+
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+
+const bodyMargin = 20;
+const contentWidth = 600;
+const contentHeight = 560;
+
+
 const col = 5;
 const row = 3;
 
@@ -35,29 +90,41 @@ const rowHeight = Math.ceil(contentHeight / row);
 const titleHeight = 40;
 const fontHeight = 24;
 
-
-
-
 const width = contentWidth + bodyMargin * 2;
 const height = contentHeight + bodyMargin * 2 + titleHeight;
-const scale = 2;
+const scale = 3;
+
+
 canvas.width = width * scale;
 canvas.height = height * scale;
+
+ctx.fillStyle = '#FFF';
+ctx.fillRect(
+    0,0, 
+    width * scale,height * scale
+);
+
+ctx.textAlign = 'left';
+ctx.font = `${9 * scale}px sans-serif`;
+ctx.fillStyle = '#AAA';
+ctx.textBaseline = 'middle';
+ctx.lineCap  = 'round';
+ctx.lineJoin = 'round';
+ctx.fillText(
+    '@卜卜口 · lab.magiconch.com/anime-grid · 神奇海螺试验场 · 动画信息来自番组计划 · 禁止商业、盈利用途',
+    19 * scale,
+    (height - 10) * scale
+);
+
 ctx.scale(scale,scale);
 ctx.translate(
     bodyMargin,
     bodyMargin + titleHeight
 );
 
-
-
-
 ctx.font = '16px sans-serif';
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
 ctx.fillStyle = '#222';
-ctx.lineCap  = 'round';
-ctx.lineJoin = 'round';
+ctx.textAlign = 'center';
 
 ctx.save();
 ctx.lineWidth = 2;
@@ -65,6 +132,10 @@ ctx.strokeStyle = '#222';
 
 ctx.font = 'bold 24px sans-serif';
 ctx.fillText('动画生涯个人喜好表',contentWidth / 2, -24 );
+
+
+
+
 for(let y = 0;y <= row;y++){
 
     ctx.beginPath();
@@ -103,28 +174,56 @@ for(let y = 0;y < row;y++){
     }
 }
 
+// const APIURL = `https://lab.magiconch.com/api/bangumi/anime`;
+const APIURL = `http://localhost:60912/api/bangumi/`;
 
 
+const getCoverURLById = id => `${APIURL}anime/${id}/cover.jpg`;
 
-let currentBangumiId = null;
-const bangumis = new Array(types.length);
-const Images = {};
+let currentBangumiIndex = null;
+const searchBoxEl = document.querySelector('.search-bangumis-box');
+const formEl = document.querySelector('form');
+const searchInputEl = formEl[0];
+const animeListEl = document.querySelector('.anime-list');
 
-const loadImage = (src,onOver)=>{
-    if(Images[src]) return onOver(Images[src]);
-    const el = new Image();
-    el.crossOrigin = 'Anonymous';
-    el.src = src;
-    el.onload = ()=>{
-        onOver(el)
-        Images[src] = el;
-    }
-    // document.body.appendChild(el);
+const openSearchBox = (index)=>{
+    currentBangumiIndex = index;
+    document.documentElement.setAttribute('data-no-scroll',true);
+    searchBoxEl.setAttribute('data-show',true);
+}
+const closeSearchBox = ()=>{
+    document.documentElement.setAttribute('data-no-scroll',true);
+    searchBoxEl.setAttribute('data-show',false);
+    searchInputEl.value = '';
+    formEl.onsubmit();
+};
+animeListEl.onclick = e=>{
+    const id = +e.target.getAttribute('data-id');
+    if(currentBangumiIndex === null) return;
+
+    bangumis[currentBangumiIndex] = id;
+    saveBangumisToLocalStorage();
+    drawBangumis();
+
+    closeSearchBox();
 };
 
-bangumis[0] = 9717;
-bangumis[4] = 325585;
-bangumis[8] = 274;
+formEl.onsubmit = async e=>{
+    if(e) e.preventDefault();
+    let url = `${APIURL}animes`;
+
+    const keyword = searchInputEl.value.trim();
+    if(keyword) url = url + `?keyword=${encodeURIComponent(keyword)}`;
+
+    const animes = await get(url);
+    animeListEl.innerHTML = animes.map(anime=>{
+        return `<div class="anime-item" data-id="${anime.id}"><img src="${getCoverURLById(anime.id)}" crossOrigin="Anonymous"><h3>${anime.title}</h3></div>`;
+    }).join('');
+}
+
+formEl.onsubmit();
+
+
 
 
 const imageWidth = colWidth - 2;
@@ -134,11 +233,11 @@ const canvasRatio = imageWidth / imageHeight;
 const drawBangumis = ()=>{
     for(let index in bangumis){
         const id = bangumis[index];
-        const x = index % row;
-        const y = Math.floor(index / row);
+        if(!id) continue;
+        const x = index % col;
+        const y = Math.floor(index / col);
         
-        loadImage(`https://lab.magiconch.com/api/bangumi/anime/${id}/cover.jpg`,el=>{
-        // loadImage(`http://localhost:60912/api/bangumi/anime/${id}/cover.jpg`,el=>{
+        loadImage(getCoverURLById(id),el=>{
             const { naturalWidth, naturalHeight } = el;
             const originRatio = el.naturalWidth / el.naturalHeight;
 
@@ -158,11 +257,8 @@ const drawBangumis = ()=>{
             ctx.drawImage(
                 el,
                 
-                sx, 
-                sy, 
-
-                sw, 
-                sh, 
+                sx, sy,
+                sw, sh, 
 
                 x * colWidth + 1,
                 y * rowHeight + 1, 
@@ -173,9 +269,6 @@ const drawBangumis = ()=>{
     }
 }
 
-drawBangumis();
-
-const downloadBtnEl = document.querySelector('.generator-btn');
 
 const downloadImage = ()=>{
     const fileName = '[神奇海螺][动画生涯个人喜好表].jpg';
@@ -188,17 +281,12 @@ const downloadImage = ()=>{
     document.body.appendChild(linkEl);
     linkEl.click();
     document.body.removeChild(linkEl);
+    new Image().src = `${APIURL}grid?ids=${getBangumiIdsText()}`;
 }
-
-downloadBtnEl.onclick = downloadImage;
-
 
 canvas.onclick = e=>{
     const rect = canvas.getBoundingClientRect();
     const { clientX, clientY } = e;
-    // console.log(e,rect, clientX, clientY);
-    // console.log(clientX)
-    // console.log(clientX - rect.left)
     const x = Math.floor(((clientX - rect.left) / rect.width * width - bodyMargin) / colWidth);
     const y = Math.floor(((clientY - rect.top) / rect.height * height  - bodyMargin - titleHeight) / rowHeight);
 
@@ -208,5 +296,11 @@ canvas.onclick = e=>{
     if(y > row) return;
 
     const index = y * col + x;
-    console.log(x,y,index);
+
+    if(index >= col * row) return;
+
+    openSearchBox(index);
 }
+
+
+drawBangumis();
