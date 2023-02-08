@@ -30,8 +30,8 @@ const types = typeTexts.trim().split(/\n+/g);
 const col = 5;
 const row = 3;
 
-const colWidth = contentWidth / col;
-const rowHeight = contentHeight / row;
+const colWidth = Math.ceil(contentWidth / col);
+const rowHeight = Math.ceil(contentHeight / row);
 const titleHeight = 40;
 const fontHeight = 24;
 
@@ -51,7 +51,8 @@ ctx.translate(
 
 
 
-ctx.font = '18px sans-serif';
+
+ctx.font = '16px sans-serif';
 ctx.textAlign = 'center';
 ctx.textBaseline = 'middle';
 ctx.fillStyle = '#222';
@@ -62,7 +63,8 @@ ctx.save();
 ctx.lineWidth = 2;
 ctx.strokeStyle = '#222';
 
-
+ctx.font = 'bold 24px sans-serif';
+ctx.fillText('动画生涯个人喜好表',contentWidth / 2, -24 );
 for(let y = 0;y <= row;y++){
 
     ctx.beginPath();
@@ -100,6 +102,10 @@ for(let y = 0;y < row;y++){
         );
     }
 }
+
+
+
+
 let currentBangumiId = null;
 const bangumis = new Array(types.length);
 const Images = {};
@@ -113,10 +119,12 @@ const loadImage = (src,onOver)=>{
         onOver(el)
         Images[src] = el;
     }
-    document.body.appendChild(el);
+    // document.body.appendChild(el);
 };
 
 bangumis[0] = 9717;
+bangumis[4] = 325585;
+bangumis[8] = 274;
 
 
 const imageWidth = colWidth - 2;
@@ -128,30 +136,12 @@ const drawBangumis = ()=>{
         const id = bangumis[index];
         const x = index % row;
         const y = Math.floor(index / row);
-
-        loadImage(`https://nagisa.magiconch.com/api/bangumi/anime/${id}/cover.jpg`,el=>{
+        
+        loadImage(`https://lab.magiconch.com/api/bangumi/anime/${id}/cover.jpg`,el=>{
+        // loadImage(`http://localhost:60912/api/bangumi/anime/${id}/cover.jpg`,el=>{
             const { naturalWidth, naturalHeight } = el;
             const originRatio = el.naturalWidth / el.naturalHeight;
-            // let dx, dy, dw, dh;
-            // if(originRatio < canvasRatio){
-            //     dh = imageHeight
-            //     dw = dh * originRatio
-            //     dx = (imageWidth - dw) / 2
-            //     dy = 0
-            // }else{
-            //     dw = imageWidth
-            //     dh = dw / originRatio
-            //     dx = 0
-            //     dy = (imageHeight - dh) / 2 
-            // }
 
-            // ctx.drawImage(
-            //     el,
-            //     x * colWidth + 1 + dx,
-            //     y * rowHeight + 1 + dy,
-            //     dw,
-            //     dh,
-            // );
             let sw, sh, sx, sy;
             if(originRatio < canvasRatio){
                 sw = naturalWidth
@@ -206,10 +196,17 @@ downloadBtnEl.onclick = downloadImage;
 canvas.onclick = e=>{
     const rect = canvas.getBoundingClientRect();
     const { clientX, clientY } = e;
-    console.log(e,rect, clientX, clientY);
-    console.log(clientX)
-    console.log(clientX - rect.left)
-    const x = Math.ceil(((clientX - rect.left) / rect.width * width - bodyMargin) / colWidth);
-    const y = Math.ceil(((clientY - rect.top) / rect.height * height  - bodyMargin - titleHeight) / rowHeight);
-    console.log(x,y);
+    // console.log(e,rect, clientX, clientY);
+    // console.log(clientX)
+    // console.log(clientX - rect.left)
+    const x = Math.floor(((clientX - rect.left) / rect.width * width - bodyMargin) / colWidth);
+    const y = Math.floor(((clientY - rect.top) / rect.height * height  - bodyMargin - titleHeight) / rowHeight);
+
+    if(x < 0) return;
+    if(x > col) return;
+    if(y < 0) return;
+    if(y > row) return;
+
+    const index = y * col + x;
+    console.log(x,y,index);
 }
