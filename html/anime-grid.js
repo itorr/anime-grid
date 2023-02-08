@@ -92,7 +92,7 @@ const fontHeight = 24;
 
 const width = contentWidth + bodyMargin * 2;
 const height = contentHeight + bodyMargin * 2 + titleHeight;
-const scale = 2;
+const scale = 3;
 
 
 canvas.width = width * scale;
@@ -275,7 +275,7 @@ const drawBangumis = ()=>{
 const downloadImage = ()=>{
     const fileName = '[神奇海螺][动画生涯个人喜好表].jpg';
     const mime = 'image/jpg';
-    const imgURL = canvas.toDataURL(mime,0.8);
+    const imgURL = canvas.toDataURL(mime,'image/jpeg',0.8);
     const linkEl = document.createElement('a');
     linkEl.download = fileName;
     linkEl.href = imgURL;
