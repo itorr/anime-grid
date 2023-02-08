@@ -189,6 +189,9 @@ const openSearchBox = (index)=>{
     currentBangumiIndex = index;
     document.documentElement.setAttribute('data-no-scroll',true);
     searchBoxEl.setAttribute('data-show',true);
+    setTimeout(()=>{
+        searchInputEl.focus();
+    },200);
 }
 const closeSearchBox = ()=>{
     document.documentElement.setAttribute('data-no-scroll',true);
