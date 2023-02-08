@@ -1,5 +1,7 @@
 # 🤖「动画生涯个人喜好表生成器」
 
+一个生成 动画生涯个人喜好表 的在线网页工具
+
 ## 地址 
 
 https://lab.magiconch.com/anime-grid/
