@@ -194,7 +194,7 @@ const openSearchBox = (index)=>{
     },200);
 }
 const closeSearchBox = ()=>{
-    document.documentElement.setAttribute('data-no-scroll',true);
+    document.documentElement.setAttribute('data-no-scroll',false);
     searchBoxEl.setAttribute('data-show',false);
     searchInputEl.value = '';
     formEl.onsubmit();
