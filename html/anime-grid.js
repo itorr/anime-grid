@@ -1,10 +1,14 @@
+const htmlEl = document.documentElement;
+
 const Caches = {};
 const get = async (url)=>{
-    if(Caches[url]) return Caches[url];
 
+    if(Caches[url]) return Caches[url];
+    htmlEl.setAttribute('data-no-touch',true);
     const f = await fetch(url);
     const data = await f.json();
     Caches[url] = data;
+    htmlEl.setAttribute('data-no-touch',false);
     return data;
 }
 
@@ -179,7 +183,8 @@ for(let y = 0;y < row;y++){
 }
 
 const APIURL = `https://lab.magiconch.com/api/bangumi/`;
-const ImageURL = `https://nagisa.magiconch.com/api/bangumi/`;
+// const APIURL = `http://localhost:60912/api/bangumi/`;
+const ImageURL = `https://api.anitabi.cn/bgm/`;
 
 
 const getCoverURLById = id => `${ImageURL}anime/${id}/cover.jpg`;
@@ -192,7 +197,7 @@ const animeListEl = document.querySelector('.anime-list');
 
 const openSearchBox = (index)=>{
     currentBangumiIndex = index;
-    document.documentElement.setAttribute('data-no-scroll',true);
+    htmlEl.setAttribute('data-no-scroll',true);
     searchBoxEl.setAttribute('data-show',true);
     
     searchInputEl.focus();
@@ -205,7 +210,7 @@ const openSearchBox = (index)=>{
         
 }
 const closeSearchBox = ()=>{
-    document.documentElement.setAttribute('data-no-scroll',false);
+    htmlEl.setAttribute('data-no-scroll',false);
     searchBoxEl.setAttribute('data-show',false);
     searchInputEl.value = '';
     formEl.onsubmit();
@@ -231,17 +236,40 @@ animeListEl.onclick = e=>{
     setCurrentBangumi(id);
 };
 
-formEl.onsubmit = async e=>{
-    if(e) e.preventDefault();
-    let url = `${APIURL}animes`;
-
-    const keyword = searchInputEl.value.trim();
+const searchFromBangumiByKeyword = async keyword=>{
+    let url = `${APIURL}anime/onlines`;
     if(keyword) url = url + `?keyword=${encodeURIComponent(keyword)}`;
 
     const animes = await get(url);
+    resetAnimeList(animes);
+}
+const searchFromBangumi = ()=>{
+    const keyword = searchInputEl.value.trim();
+    if(!keyword) return searchInputEl.focus();
+
+    searchFromBangumiByKeyword(keyword);
+}
+
+
+const searchFromAPI = async keyword=>{
+    let url = `${APIURL}animes`;
+    if(keyword) url = url + `?keyword=${encodeURIComponent(keyword)}`;
+
+    const animes = await get(url);
+    resetAnimeList(animes);
+}
+
+const resetAnimeList = animes=>{
     animeListEl.innerHTML = animes.map(anime=>{
         return `<div class="anime-item" data-id="${anime.id}"><img src="${getCoverURLById(anime.id)}" crossOrigin="Anonymous"><h3>${anime.title}</h3></div>`;
     }).join('');
+}
+formEl.onsubmit = async e=>{
+    if(e) e.preventDefault();
+
+    const keyword = searchInputEl.value.trim();
+
+    searchFromAPI(keyword);
 }
 
 formEl.onsubmit();
@@ -264,13 +292,15 @@ const drawBangumis = ()=>{
 
         if(!/^\d+$/.test(id)){ // 非数字
 
-            console.log(id)
-            ctx.clearRect(
+            ctx.save();
+            ctx.fillStyle = '#FFF';
+            ctx.fillRect(
                 x * colWidth + 1,
                 y * rowHeight + 1, 
                 imageWidth,
                 imageHeight,
             )
+            ctx.restore();
             ctx.fillText(
                 id,
                 (x + 0.5) * colWidth,
@@ -313,6 +343,16 @@ const drawBangumis = ()=>{
 }
 
 
+const outputEl = document.querySelector('.output-box');
+const outputImageEl = outputEl.querySelector('img');
+const showOutput = imgURL=>{
+    outputImageEl.src = imgURL;
+    outputEl.setAttribute('data-show',true);
+}
+const closeOutput = ()=>{
+    outputEl.setAttribute('data-show',false);
+}
+
 const downloadImage = ()=>{
     const fileName = '[神奇海螺][动画生涯个人喜好表].jpg';
     const mime = 'image/jpeg';
@@ -325,6 +365,8 @@ const downloadImage = ()=>{
     linkEl.click();
     document.body.removeChild(linkEl);
     new Image().src = `${APIURL}grid?ids=${getBangumiIdsText()}`;
+
+    showOutput(imgURL);
 }
 
 canvas.onclick = e=>{

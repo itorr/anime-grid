@@ -13,15 +13,28 @@
     <div class="ctrl-box">
         <a class="generator-btn ui-btn" onclick="downloadImage()">生成动画生涯个人喜好表</a>
     </div>
-    <div class="search-bangumis-box" data-show="false">
+    <div class="search-bangumis-box ui-shadow" data-show="false">
         <div class="content-box">
             <form>
                 <input type="text" placeholder="输入关键词、回车查找动画">
             </form>
             <div class="anime-list"></div>
             <div class="foot">
+                <a class="close ui-btn" onclick="searchFromBangumi()">在番组计划搜索</a>
                 <a class="close ui-btn" onclick="setInputText()">没找到，就用搜索框里的文字了</a>
                 <a class="close ui-btn current" onclick="closeSearchBox()">取消设定</a>
+            </div>
+        </div>
+    </div>
+    <div class="output-box ui-shadow" data-show="false">
+        <div class="content-box">
+            <h3>生成好啦~</h3>
+            <img>
+            <div class="body">
+                <p>在 微博、微信、企鹅 应用中，请长按图片进行保存</p>
+            </div>
+            <div class="foot">
+                <a class="close ui-btn current" onclick="closeOutput()">关闭</a>
             </div>
         </div>
     </div>
