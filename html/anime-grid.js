@@ -348,9 +348,11 @@ const outputImageEl = outputEl.querySelector('img');
 const showOutput = imgURL=>{
     outputImageEl.src = imgURL;
     outputEl.setAttribute('data-show',true);
+    htmlEl.setAttribute('data-no-scroll',true);
 }
 const closeOutput = ()=>{
     outputEl.setAttribute('data-show',false);
+    htmlEl.setAttribute('data-no-scroll',false);
 }
 
 const downloadImage = ()=>{
