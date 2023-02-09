@@ -179,9 +179,10 @@ for(let y = 0;y < row;y++){
 }
 
 const APIURL = `https://lab.magiconch.com/api/bangumi/`;
+const ImageURL = `https://nagisa.magiconch.com/api/bangumi/`;
 
 
-const getCoverURLById = id => `${APIURL}anime/${id}/cover.jpg`;
+const getCoverURLById = id => `${ImageURL}anime/${id}/cover.jpg`;
 
 let currentBangumiIndex = null;
 const searchBoxEl = document.querySelector('.search-bangumis-box');
