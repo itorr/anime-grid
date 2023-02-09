@@ -57,7 +57,7 @@ const generatorDefaultBangumis = ()=> {
     bangumis = new Array(types.length).fill(null);
 }
 
-const getBangumiIdsText = ()=> bangumis.map(i=>String(i||0))
+const getBangumiIdsText = ()=> bangumis.map(i=>String( i || 0 )).join(',')
 
 const getBangumisFormLocalStorage = ()=>{
     if(!window.localStorage) return generatorDefaultBangumis();
@@ -65,7 +65,7 @@ const getBangumisFormLocalStorage = ()=>{
     const bangumisText = localStorage.getItem(bangumiLocalKey);
     if(!bangumisText) return generatorDefaultBangumis();
 
-    bangumis = bangumisText.split(/,/g).map(i=>+i || null);
+    bangumis = bangumisText.split(/,/g).map(i=>/^\d+$/.test(i) ? +i : i);
 }
 
 getBangumisFormLocalStorage();
@@ -126,15 +126,18 @@ ctx.font = '16px sans-serif';
 ctx.fillStyle = '#222';
 ctx.textAlign = 'center';
 
+
 ctx.save();
-ctx.lineWidth = 2;
-ctx.strokeStyle = '#222';
+
 
 ctx.font = 'bold 24px sans-serif';
 ctx.fillText('动画生涯个人喜好表',contentWidth / 2, -24 );
 
 
 
+
+ctx.lineWidth = 2;
+ctx.strokeStyle = '#222';
 
 for(let y = 0;y <= row;y++){
 
@@ -159,6 +162,7 @@ for(let x = 0;x <= col;x++){
     ctx.stroke();
 }
 ctx.restore();
+
 
 for(let y = 0;y < row;y++){
 
@@ -189,9 +193,15 @@ const openSearchBox = (index)=>{
     currentBangumiIndex = index;
     document.documentElement.setAttribute('data-no-scroll',true);
     searchBoxEl.setAttribute('data-show',true);
-    setTimeout(()=>{
-        searchInputEl.focus();
-    },200);
+    
+    searchInputEl.focus();
+
+    const value = bangumis[currentBangumiIndex];
+
+    if(!/^\d+$/.test(value)){
+        searchInputEl.value = value;
+    }
+        
 }
 const closeSearchBox = ()=>{
     document.documentElement.setAttribute('data-no-scroll',false);
@@ -199,15 +209,25 @@ const closeSearchBox = ()=>{
     searchInputEl.value = '';
     formEl.onsubmit();
 };
-animeListEl.onclick = e=>{
-    const id = +e.target.getAttribute('data-id');
-    if(currentBangumiIndex === null) return;
+const setInputText = ()=>{
+    const text = searchInputEl.value.trim().replace(/,/g,'');
+    setCurrentBangumi(text);
+}
 
-    bangumis[currentBangumiIndex] = id;
+
+const setCurrentBangumi =  (value)=>{
+
+    bangumis[currentBangumiIndex] = value;
     saveBangumisToLocalStorage();
     drawBangumis();
 
     closeSearchBox();
+}
+
+animeListEl.onclick = e=>{
+    const id = +e.target.getAttribute('data-id');
+    if(currentBangumiIndex === null) return;
+    setCurrentBangumi(id);
 };
 
 formEl.onsubmit = async e=>{
@@ -232,12 +252,32 @@ const imageWidth = colWidth - 2;
 const imageHeight = rowHeight - fontHeight;
 const canvasRatio = imageWidth / imageHeight;
 
+ctx.font = 'bold 32px sans-serif';
+
 const drawBangumis = ()=>{
     for(let index in bangumis){
         const id = bangumis[index];
         if(!id) continue;
         const x = index % col;
         const y = Math.floor(index / col);
+
+        if(!/^\d+$/.test(id)){ // 非数字
+
+            console.log(id)
+            ctx.clearRect(
+                x * colWidth + 1,
+                y * rowHeight + 1, 
+                imageWidth,
+                imageHeight,
+            )
+            ctx.fillText(
+                id,
+                (x + 0.5) * colWidth,
+                (y + 0.5) * rowHeight - 4, 
+                imageWidth - 10,
+            );
+            continue;
+        }
         
         loadImage(getCoverURLById(id),el=>{
             const { naturalWidth, naturalHeight } = el;
