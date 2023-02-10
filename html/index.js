@@ -1,6 +1,31 @@
 const table = document.getElementById("my_table");
+
+// add row form
+const addRowForm = document.getElementById("add_row_form");
+const columnsInput = document.getElementById("columns_input");
+const resetButton = document.getElementById("reset_button");
+
+// edit dialog
+const editDialog = document.getElementById("edit_dialog");
+const editForm = document.getElementById("edit_form");
+const searchInput = document.getElementById("search_work_input");
+const searchResult = document.getElementById("search_result");
+const imgFileInput = document.getElementById("img_file_input");
+const imgContainer = document.getElementById("img_container");
+const imgPreview = document.getElementById("img_preview");
+const descriptionInput = document.getElementById("description");
+const cancel = document.getElementById("cancel");
+
+const saveButton = document.getElementById("save_button");
+
+// indicate which cell should edit, reassign when user click
 let targetCell;
 
+/**
+ * Add row to table
+ *
+ * @param {{numColumns: number, descriptionList: string[]}}
+ */
 function addRow({ numColumns, descriptionList }) {
   const table = document.getElementById("my_table");
   if (descriptionList) {
@@ -39,17 +64,7 @@ function editCell(cell, imgURL, description) {
     `<div class="cell-wrapper"><img src="${imgURL}" alt="${imgURL}" ><div>${description}</div></div>`;
 }
 
-// edit cell dialog ================================================
-const cancel = document.getElementById("cancel");
-const imgFileInput = document.getElementById("img_file_input");
-const imgPreview = document.getElementById("img_preview");
-const descriptionInput = document.getElementById("description");
-const editForm = document.getElementById("edit_form");
-const imgContainer = document.getElementById("img_container");
-const searchResult = document.getElementById("search_result");
-const searchInput = document.getElementById("search_work_input");
-const editDialog = document.getElementById("edit_dialog");
-
+// handle submit edit cell form
 editForm.addEventListener("submit", function (e) {
   e.preventDefault();
   editCell(targetCell, imgPreview.src, descriptionInput.value);
@@ -76,16 +91,16 @@ imgFileInput.addEventListener("change", function () {
   updateImgPreview(file);
 });
 
-// paste image
+// paste, update image
 editForm.addEventListener("paste", function (e) {
   const data = (e.clipboardData || window.clipboardData);
+  if (!data) return;
   const item = [...data.items].find((i) => i.type.includes("image"));
 
   if (item?.kind === "file") {
     updateImgPreview(item.getAsFile());
   }
 });
-// end =============================================================
 
 // open edit editDialog
 table.addEventListener("click", function (e) {
@@ -95,15 +110,13 @@ table.addEventListener("click", function (e) {
   searchInput.focus();
 });
 
-const addRowForm = document.getElementById("add_row_form");
-const columnsInput = document.getElementById("columns_input");
-const resetButton = document.getElementById("reset_button");
-
+// clear all table data
 resetButton.addEventListener("click", function () {
   columnsInput.disabled = false;
   table.innerHTML = "";
 });
 
+// handle add row form submit
 addRowForm.addEventListener("submit", function (e) {
   e.preventDefault();
   columnsInput.disabled = true;
@@ -111,24 +124,27 @@ addRowForm.addEventListener("submit", function (e) {
   addRowForm.reset();
 });
 
-const saveButton = document.getElementById("save_button");
 saveButton.addEventListener("click", async function () {
+  // table_container is the target for final image rendering.
   const container = document.getElementById("table_container");
   saveButton.innerText = "載入中...";
   try {
     const dataURL = await htmlToImage.toJpeg(container, { quality: 0.96 });
+
+    // download image
     const link = document.createElement("a");
     link.download = "output.png";
     link.href = dataURL;
     link.click();
+
+    // append htmlToImage result below
     // const img = new Image();
     // img.src = dataURL;
     // document.querySelector("main").appendChild(img);
-    saveButton.innerText = "儲存";
   } catch (err) {
-    saveButton.innerText = "儲存";
-    console.error("oops, something went wrong!", err);
+    console.error(err);
   }
+  saveButton.innerText = "儲存";
 });
 
 // template 2d array
@@ -147,7 +163,6 @@ searchInput.addEventListener("keydown", async function (e) {
     searchImage(title);
   }
 });
-let a;
 
 async function searchJapaneseTitle(keyword) {
   if (keyword === "") return;
@@ -171,7 +186,7 @@ async function searchJapaneseTitle(keyword) {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
   searchResult.innerHTML =
     `<a href="https://www.google.com/search?tbm=isch&q=${keyword.trim()}" target="_blank">在Google圖片搜尋</a>` +
@@ -185,11 +200,10 @@ async function searchImage(title) {
     `&fields=images,title,twitter_username&filter_title=${title}`;
   try {
     const response = await fetch(url);
-    a = response;
     const json = await response.json();
     imgContainer.innerHTML = "";
     for (const work of json.works) {
-      // looks like unavatar currently not work for twitter :(
+      // fetch twitter profile photo, currently not working :(
       // if (work.twitter_username) {
       //   const avatarURL = `https://unavatar.io/twitter/${work.twitter_username}`
       //   const imgContainer = document.getElementById('img_container')
@@ -198,6 +212,7 @@ async function searchImage(title) {
       //   imgContainer.appendChild(img)
       // }
 
+      // append image to imgContainer for user to choose
       if (work.images.recommended_url !== "") {
         const img = document.createElement("img");
         img.src = work.images.recommended_url;
@@ -218,6 +233,7 @@ async function searchImage(title) {
   }
 }
 
+// itorr's initial grid context
 const initialTemplate = [
   ["入坑作", "最喜歡", "看最多次", "最想安利", "最佳劇情"],
   ["最佳畫面", "最佳配樂", "最佳配音", "最治癒", "最感動"],
