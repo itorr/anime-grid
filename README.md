@@ -16,7 +16,7 @@ yarn build # build static html at html/dist/ directory
 
 ## Config
 
-While using the Annict API, you need to copy `html/.env.example` to `html/.env.local` and replace `your-api-token` with your own API token.
+While using the Annict API, you need to copy `html/.env.example` to `html/.env.local` and replace `your-api-token` with your own API token. (Actually once you build the static html, it will expose your API token to the client side, which is pretty bad.)
 
 If you don't want to install vite, you should replace `import.meta.env.VITE_ANNICT_API_TOKEN` in `html/index.js` with your own token.
 
