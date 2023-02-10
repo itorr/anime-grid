@@ -2,8 +2,8 @@
   "name": "anime-grid",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite html/",
-    "build": "vite build html/"
+    "dev": "vite",
+    "build": "vite build --outDir ../dist --emptyOutDir"
   },
   "repository": "https://github.com/FOBshippingpoint/anime-grid",
   "author": "FOBshippingpoint <aulaulql4ql4xj6@gmail.com>",
