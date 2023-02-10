@@ -1,0 +1,16 @@
+{
+  "name": "anime-grid",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite html/",
+    "build": "vite build html/"
+  },
+  "repository": "https://github.com/FOBshippingpoint/anime-grid",
+  "author": "FOBshippingpoint <aulaulql4ql4xj6@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^4.1.1"
+  },
+  "type": "module"
+}

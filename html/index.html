@@ -1,49 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动画生涯个人喜好表生成器 - 神奇海螺试验场</title>
-    <meta name=keywords content="动画生涯,个人喜好表生成器,神奇海螺试验场,magiconch,卜卜口">
-    <link rel="stylesheet" href="document.css">
-</head>
-<body>
-    <canvas></canvas>
-    <div class="ctrl-box">
-        <a class="generator-btn ui-btn" onclick="downloadImage()">生成动画生涯个人喜好表</a>
-    </div>
-    <div class="search-bangumis-box ui-shadow" data-show="false">
-        <div class="content-box">
-            <form>
-                <input type="text" placeholder="输入关键词、回车查找动画">
-            </form>
-            <div class="anime-list"></div>
-            <div class="foot">
-                <a class="close ui-btn" onclick="searchFromBangumi()">在番组计划搜索</a>
-                <a class="close ui-btn" onclick="setInputText()">没找到，就用搜索框里的文字了</a>
-                <a class="close ui-btn current" onclick="closeSearchBox()">取消设定</a>
-            </div>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>動畫生涯個人喜好表生成器</title>
+    <script src="3rdparty/html-to-image.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <form id="add_row_form">
+        <label for="columns">欄位數</label>
+        <input type="number" id="columns_input" name="columns" value="5" required />
+        <br />
+        <br />
+        <div class="buttons-container">
+          <button type="submit" id="add_row_button">新增一列</button>
+          <button type="button" id="reset_button">重設</button>
         </div>
-    </div>
-    <div class="output-box ui-shadow" data-show="false">
-        <div class="content-box">
-            <h3>生成好啦~</h3>
-            <img>
-            <div class="body">
-                <p>在 微博、微信、企鹅 应用中，请长按图片进行保存</p>
-            </div>
-            <div class="foot">
-                <a class="close ui-btn current" onclick="closeOutput()">关闭</a>
-            </div>
+      </form>
+      <div id="table_container_wrapper">
+        <div id="table_container">
+          <!-- <h1 contentEditable>asdfasdf</h1> -->
+          <table id="my_table"></table>
+          <span>@suesucollection; https://suesucollection.onrender.com</span>
         </div>
-    </div>
+      </div>
+      <button id="save_button">儲存</button>
+    </main>
     <footer>
-        <a href="https://lab.magiconch.com/" target="_blank">神奇海螺试验场</a>
-        <a href="https://weibo.com/reiove" target="_blank">@卜卜口</a>
-        <a href="https://github.com/itorr/anime-grid" target="_blank">GitHub</a>
-        <span>动画信息来自 <a href="https://bgm.tv/" target="_blank">番组计划</a></span>
+        <span>Repo <a href="https://github.com/FOBshippingpoint/anime-grid" target="_blank">GitHub</a></span>
+        <span>Forked from <a href="https://github.com/itorr/anime-grid" target="_blank">GitHub</a></span>
+        <span>Image placeholder from <a href="https://picsum.photos/" target="_blank">Lorem Picsum</a></span>
     </footer>
-    <script src="anime-grid.js"></script>
-</body>
+    <div id="edit_dialog" class="dialog" style="display: none;">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2>加入作品</h2>
+        </div>
+        <form id="edit_form">
+          <div class="dialog-body">
+            <div>
+              <label for="search">作品名稱</label>
+              <input type="text" id="search_work_input" name="search" placeholder="按Enter開始搜尋" />
+            </div>
+            <div>
+              <div id="img_container"></div>
+              <div id="search_result"></div>
+            </div>
+            <div>
+              <label for="image">圖片</label>
+              <input type="file" id="img_file_input" name="image" />
+            </div>
+            <div>
+              <img src="" id="img_preview" />
+            </div>
+            <div>
+              <label for="description">作品描述</label>
+              <input type="text" id="description" name="description" required />
+            </div>
+          </div>
+          <div class="dialog-footer buttons-container">
+            <button type="submit">確定</button>
+            <button id="cancel" type="button">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="index.js" type="module"></script>
+  </body>
 </html>

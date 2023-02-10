@@ -1,39 +1,32 @@
-![动画生涯个人喜好表](https://github.com/itorr/anime-grid/blob/master/simple.jpg?raw=true)
+# 🤖「動畫生涯個人喜好表生成器」
 
-# 🤖「动画生涯个人喜好表生成器」
+一個生成 動畫生涯個人喜好表 的網頁工具
 
-一个生成 动画生涯个人喜好表 的在线网页工具
+Forked from [itorr/anime-grid](https://github.com/itorr/anime-grid).
 
-## 地址 
+## Developing
 
-https://lab.magiconch.com/anime-grid/
+You can open `html/index.html` to get started, but for a better experience, you can install yarn and run `yarn dev`.
 
-## 类别
+```sh
+yarn # install depenencies
+yarn dev # start the dev server
+yarn build # build static html at html/dist/ directory
+```
 
- - 入坑作
- - 最喜欢
- - 看最多次
- - 最想安利
+## Config
 
- - 最佳剧情
- - 最佳画面
- - 最佳配乐
- - 最佳配音
+While using the Annict API, you need to copy `html/.env.example` to `html/.env.local` and replace `your-api-token` with your own API token.
 
- - 最治愈
- - 最感动
- - 最虐心
- - 最被低估
+If you don't want to install vite, you should replace `import.meta.env.VITE_ANNICT_API_TOKEN` in `html/index.js` with your own token.
 
- - 最过誉
- - 最离谱
- - 最讨厌
+## Library Used
 
-## GitHub
-https://github.com/itorr/anime-grid
+- [html-to-dom](https://github.com/bubkoo/html-to-image)
 
+## API Used
 
-## 利用
- - 动画信息来自 番组计划 https://bangumi.tv/
+- [MediaWiki](https://www.mediawiki.org/wiki/API:Main_page): Translates Chinese anime titles to Japanese.
+- [Annict](https://developers.annict.com/docs): Retrieves anime images.
 
-禁止 商业、盈利 相关利用
+## Original Idea By [@itorr](https://github.com/itorr/anime-grid)

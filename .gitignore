@@ -1,0 +1,3 @@
+node_modules
+html/dist
+html/.env.local
