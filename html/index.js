@@ -166,12 +166,11 @@ searchInput.addEventListener("keydown", async function (e) {
 
 async function searchJapaneseTitle(keyword) {
   if (keyword === "") return;
-  keyword = encodeURIComponent(keyword);
+  keyword = encodeURIComponent(keyword.trim());
   const url =
     `https://zh.wikipedia.org/w/api.php?action=query&lllimit=500&prop=langlinks&titles=${keyword}&format=json&origin=*`;
   try {
     const response = await fetch(url);
-    a = response;
     const json = await response.json();
     if (Object.values(json.query.pages).length === 0) return;
     // get first object
@@ -189,15 +188,15 @@ async function searchJapaneseTitle(keyword) {
     console.error(err);
   }
   searchResult.innerHTML =
-    `<a href="https://www.google.com/search?tbm=isch&q=${keyword.trim()}" target="_blank">在Google圖片搜尋</a>` +
+    `<a href="https://www.google.com/search?tbm=isch&q=${keyword}" target="_blank">在Google圖片搜尋</a>` +
     "<div>右鍵複製圖片後在此貼上</div>";
 }
 
-async function searchImage(title) {
-  title = encodeURIComponent(title);
+async function searchImage(keyword) {
+  keyword = encodeURIComponent(keyword.trim());
   const url =
     `https://api.annict.com/v1/works?access_token=${import.meta.env.VITE_ANNICT_API_TOKEN}` +
-    `&fields=images,title,twitter_username&filter_title=${title}`;
+    `&fields=images,title,twitter_username&filter_title=${keyword}`;
   try {
     const response = await fetch(url);
     const json = await response.json();
@@ -224,9 +223,9 @@ async function searchImage(title) {
       }
     }
     searchResult.innerHTML = "<div>找不到結果嗎？試著</div>" +
-      `<a href="https://www.google.com/search?tbm=isch&q=${title.trim()}" target="_blank">在Google圖片搜尋</a>` +
+      `<a href="https://www.google.com/search?tbm=isch&q=${keyword}" target="_blank">在Google圖片搜尋</a>` +
       " or " +
-      `<a href="https://annict.com/search?q=${title.trim()}" target="_blank">在Annict上搜尋</a>` +
+      `<a href="https://annict.com/search?q=${keyword}" target="_blank">在Annict上搜尋</a>` +
       "<div>右鍵複製圖片後在此貼上</div>";
   } catch (err) {
     console.log(err);
