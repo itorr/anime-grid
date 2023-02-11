@@ -4,6 +4,8 @@
 
 一个生成 动画生涯个人喜好表 的在线网页工具
 
+230211: 新增超多个格子的 [扩展版](https://lab.magiconch.com/anime-grid/ex.html)
+
 ## 地址 
 
 https://lab.magiconch.com/anime-grid/

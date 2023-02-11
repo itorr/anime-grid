@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动画生涯个人喜好表生成器 - 神奇海螺试验场</title>
+    <title>动画生涯个人喜好表生成器扩展版 - 神奇海螺试验场</title>
     <meta name=keywords content="动画生涯,个人喜好表生成器,神奇海螺试验场,magiconch,卜卜口">
     <link rel="stylesheet" href="document.css">
 </head>
 <body>
     <div class="anime-grid-box"></div>
     <div class="more-link-box">
-        <a href="ex.html">不够填？来试试格子超多的扩展版</a>
+        <a href="./">太多了，回普通版</a>
     </div>
     <footer>
         <a href="https://lab.magiconch.com/" target="_blank">神奇海螺试验场</a>
@@ -21,32 +21,89 @@
     </footer>
     <script src="anime-grid.js"></script>
 <script>
-const typeTexts = `入坑作
+const typeTexts = `
+入坑作
 最喜欢
+最有的聊
 看最多次
 最想安利
+最一眼缘
+
+花最多钱
+最有创作欲
+最想有人陪看
+喜欢但没看完
+最有对线欲
+精神支柱
+
+
+最治愈
+最搞笑
+最感动
+最热血
+最轻松
+扭的最厉害
+
+
+最虐心
+最震撼
+最抽象
+最写实
+最恐怖
+最电波
+
 
 最佳剧情
 最佳画面
 最佳配乐
 最佳配音
+最深刻
+最血腥暴力
 
-最治愈
-最感动
-最虐心
+
+最佳恋爱
+最佳战斗
+最佳奇幻
+最佳科幻
+最佳悬疑
+最佳智斗
+
+最佳原创
+最佳改编
+最佳漫改
+最佳小说改
+最佳游戏改
+最佳剧场版
+
+小众最爱
+最爱画风
+最爱长篇
+最久待补
+最弃而不舍
+最意犹未尽
+
+热门最烦
+最烦画风
+最爱泡面
+常听说从未看
+最难安利
+最晦涩难懂
+
+最期续作
+最胃疼
 最被低估
-
 最过誉
-最离谱
+最莫名其妙
 最讨厌
 `;
 new AnimeGrid({
     el: document.querySelector('.anime-grid-box'),
-    title: '动画生涯个人喜好表',
-    key: 'margiconch-animes-grid',
+    title: '动画生涯个人喜好表扩展版',
+    urlExt: '/ex.html',
+    key: 'margiconch-animes-grid-ex',
     typeTexts,
-    col: 5,
-    row: 3,
+    col: 6,
+    row: 10,
 })
 </script>
 </body>
