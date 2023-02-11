@@ -23,10 +23,16 @@ jobs:
         with:
           cmd: install # will run `yarn install` command
 
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env.production
+
       - name: Build 🔧
         uses: borales/actions-yarn@v4
         with:
           cmd: build
+        env:
+          VITE_ANNICT_API_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
