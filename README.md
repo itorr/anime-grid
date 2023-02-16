@@ -10,27 +10,8 @@
 
 https://lab.magiconch.com/anime-grid/
 
-## 类别
-
- - 入坑作
- - 最喜欢
- - 看最多次
- - 最想安利
-
- - 最佳剧情
- - 最佳画面
- - 最佳配乐
- - 最佳配音
-
- - 最治愈
- - 最感动
- - 最虐心
- - 最被低估
-
- - 最过誉
- - 最离谱
- - 最讨厌
-
+## 衍生
+ - 声豚生涯个人喜好表[@摇曳甜梨](https://weibo.com/3126255377/MsvYizq48)  http://202.43.145.99:8080/sy-grid/index.html
 ## GitHub
 https://github.com/itorr/anime-grid
 
