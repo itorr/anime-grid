@@ -30,18 +30,11 @@ const loadImage = (src,onOver)=>{
 
 
 const APIURL = `https://lab.magiconch.com/api/bangumi/`;
-const ImageURL = `https://api.anitabi.cn/bgm/`;
-
 
 async function getCoverURLById(id) {
   const data = await get(`https://api.bgm.tv/v0/subjects/${id}`);
   return data.images ? data.images.large : null;
 };
-
-
-
-
-
 
 class AnimeGrid {
     constructor({el,title,key,typeTexts,col,row,urlExt = ''}){
