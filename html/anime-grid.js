@@ -33,7 +33,10 @@ const APIURL = `https://lab.magiconch.com/api/bangumi/`;
 const ImageURL = `https://api.anitabi.cn/bgm/`;
 
 
-const getCoverURLById = id => `${ImageURL}anime/${id}/cover.jpg`;
+async function getCoverURLById(id) {
+  const data = await get(`https://api.bgm.tv/v0/subjects/${id}`);
+  return data.images ? data.images.large : null;
+};
 
 
 
@@ -370,13 +373,17 @@ class AnimeGrid {
         this.resetAnimeList(animes);
     }
 
-    resetAnimeList(animes){
-        this.animeListEl.innerHTML = animes.map(anime=>{
-            return `<div class="anime-item" data-id="${anime.id}"><img src="${getCoverURLById(anime.id)}" crossOrigin="Anonymous"><h3>${anime.title}</h3></div>`;
-        }).join('');
+    async resetAnimeList(animes) {
+        const htmlArray = await Promise.all(
+            animes.map(async anime => {
+                return `<div class="anime-item" data-id="${anime.id}"><img src="${await getCoverURLById(anime.id)}" crossOrigin="Anonymous"><h3>${anime.title}</h3></div>`;
+            })
+        );
+
+        this.animeListEl.innerHTML = htmlArray.join('');
     }
 
-    drawBangumis(){
+    async drawBangumis(){
         const { 
             col,row, 
             colWidth,rowHeight, 
@@ -431,7 +438,7 @@ class AnimeGrid {
                 continue;
             }
             
-            loadImage(getCoverURLById(id),el=>{
+            loadImage(await getCoverURLById(id),el=>{
                 const { naturalWidth, naturalHeight } = el;
                 const originRatio = el.naturalWidth / el.naturalHeight;
     
