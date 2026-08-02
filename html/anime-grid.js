@@ -29,8 +29,8 @@ const loadImage = (src,onOver)=>{
 };
 
 
-const APIURL = `https://lab.magiconch.com/api/bangumi/`;
-const ImageURL = `https://api.anitabi.cn/bgm/`;
+const APIURL = `https://bgm-w.magiconch.com/`;
+const ImageURL = `https://bgm-w.magiconch.com/`;
 
 
 const getCoverURLById = id => `${ImageURL}anime/${id}/cover.jpg`;
