@@ -1,5 +1,7 @@
 ![动画生涯个人喜好表](https://github.com/itorr/anime-grid/blob/master/simple.jpg?raw=true)
 
+[日本語版 README](README.ja.md)
+
 # 🤖「动画生涯个人喜好表生成器」
 
 一个生成 动画生涯个人喜好表 的在线网页工具
