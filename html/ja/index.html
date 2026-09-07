@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アニメ遍歴 個人的ベスト表ジェネレーター - 神奇海螺試验场</title>
+    <meta name="keywords" content="アニメ遍歴,個人的ベスト表,ジェネレーター,神奇海螺试验场,magiconch">
+    <link rel="stylesheet" href="../document.css">
+</head>
+<body>
+    <div class="anime-grid-box"></div>
+    <div class="more-link-box">
+        <a href="ex.html">枠が足りない？ 拡張版を試す</a> · <a href="../">中文</a>
+    </div>
+    <footer>
+        <a href="https://lab.magiconch.com/" target="_blank">神奇海螺试验场</a>
+        <a href="https://weibo.com/reiove" target="_blank">@卜卜口</a>
+        <a href="https://github.com/itorr/anime-grid" target="_blank">GitHub</a>
+        <span>アニメ情報提供：<a href="https://bgm.tv/" target="_blank">Bangumi 番组计划</a></span>
+    </footer>
+    <script src="../anime-grid.js"></script>
+    <script src="anime-grid.js"></script>
+<script>
+const typeTexts = `初ハマり
+一番好き
+一番見た
+一番おすすめ
+
+物語が最高
+作画が最高
+曲が最高
+声優が最高
+
+癒される
+感動した
+切ない
+過小評価
+
+過大評価
+ぶっ飛んでる
+一番苦手`;
+new JapaneseAnimeGrid({
+    el: document.querySelector('.anime-grid-box'),
+    title: 'アニメ遍歴 個人的ベスト表',
+    key: 'margiconch-animes-grid-ja',
+    typeTexts,
+    col: 5,
+    row: 3,
+    urlExt: '/ja/',
+})
+</script>
+</body>
+</html>

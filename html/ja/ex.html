@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アニメ遍歴 個人的ベスト表ジェネレーター 拡張版 - 神奇海螺试验场</title>
+    <meta name="keywords" content="アニメ遍歴,個人的ベスト表,ジェネレーター,拡張版,神奇海螺试验场,magiconch">
+    <link rel="stylesheet" href="../document.css">
+</head>
+<body>
+    <div class="anime-grid-box"></div>
+    <div class="more-link-box">
+        <a href="./">多すぎる？ 通常版に戻る</a> · <a href="../ex.html">中文</a>
+    </div>
+    <footer>
+        <a href="https://lab.magiconch.com/" target="_blank">神奇海螺试验场</a>
+        <a href="https://weibo.com/reiove" target="_blank">@卜卜口</a>
+        <a href="https://github.com/itorr/anime-grid" target="_blank">GitHub</a>
+        <span>アニメ情報提供：<a href="https://bgm.tv/" target="_blank">Bangumi 番组计划</a></span>
+    </footer>
+    <script src="../anime-grid.js"></script>
+    <script src="anime-grid.js"></script>
+<script>
+const typeTexts = `初ハマり
+一番好き
+一番語れる
+一番見た
+一番おすすめ
+一目惚れ
+
+一番課金した
+創作意欲が湧く
+一緒に見たい
+好きだが未完走
+議論したい
+心の支え
+
+癒される
+一番笑った
+一番感動
+一番熱い
+気楽に見れる
+一番こじれた
+
+一番切ない
+一番衝撃
+一番抽象的
+一番リアル
+一番怖い
+一番電波
+
+物語が最高
+作画が最高
+曲が最高
+声優が最高
+主題歌が最高
+一番グロい
+
+恋愛もの
+バトル
+ファンタジー
+SF
+ミステリー
+頭脳戦
+
+オリジナル作品
+最高のアニメ化
+漫画原作
+小説原作
+ゲーム原作
+劇場版
+
+隠れた名作
+好きな絵柄
+好きな長編
+積みっぱなし
+切るに切れない
+余韻が最高
+
+人気作だが苦手
+苦手な絵柄
+好きな短編
+名前だけ知ってる
+薦めにくい
+一番難解
+
+続編待ち
+胃が痛くなる
+過小評価
+過大評価
+意味不明
+一番嫌い`;
+new JapaneseAnimeGrid({
+    el: document.querySelector('.anime-grid-box'),
+    title: 'アニメ遍歴 個人的ベスト表 拡張版',
+    urlExt: '/ja/ex.html',
+    key: 'margiconch-animes-grid-ex-ja',
+    typeTexts,
+    col: 6,
+    row: 10,
+})
+</script>
+</body>
+</html>
